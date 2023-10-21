@@ -158,7 +158,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 						stad: buyer?.stad ? buyer?.stad : "",
 					},
 					addressS: {
-						company: "RCDriftAuto.nl",
+						company: "MKB-Trading",
 						straat: "Jaargetijdenweg 29-3",
 						postcode: "7532 SX",
 						stad: "Enschede"
@@ -187,7 +187,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 						.fillColor('#000000')
 						.font("Helvetica")
 						.fontSize(10)
-						.text('RCDriftAuto.nl', 200, 30, { align: 'right'})
+						.text('MKB-Trading', 200, 30, { align: 'right'})
 						.text('Jaargetijdenweg 29-3,', 200, 42, { align: 'right' })
 						.text('7532 SX Enschede', 200, 54, { align: 'right' })
 						.text('KVK: 88897818', 200, 75, { align: 'right' })
@@ -355,7 +355,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 						stad: data?.customer_details?.address?.city,
 					},
 					addressS: {
-						company: "RCDriftAuto.nl",
+						company: "MKB-Trading",
 						straat: "Jaargetijdenweg 29-3",
 						postcode: "7532 SX",
 						stad: "Enschede"
@@ -384,7 +384,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 						.fillColor('#000000')
 						.font("Helvetica")
 						.fontSize(10)
-						.text('RCDriftAuto.nl', 200, 30, { align: 'right'})
+						.text('MKB-Trading', 200, 30, { align: 'right'})
 						.text('Jaargetijdenweg 29-3,', 200, 42, { align: 'right' })
 						.text('7532 SX Enschede', 200, 54, { align: 'right' })
 						.text('KVK: 88897818', 200, 75, { align: 'right' })

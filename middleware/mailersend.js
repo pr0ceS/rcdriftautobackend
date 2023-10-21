@@ -14,10 +14,10 @@ const mailerSend = new MailerSend({
 
 const sendPaymentReceive = async (email, subject, invoice) => {
 	try {
-		const sentFrom = new Sender("rcdriftauto@gmail.com", "RCDriftAuto.nl")
+		const sentFrom = new Sender("noreply@rcdriftauto.nl", "RCDriftAuto.nl")
 
 		const recipients = [
-			new Recipient(email, await invoice?.addressB?.company ? await invoice?.addressB?.company : await email)
+			new Recipient(email, await invoice?.shipping?.name ? await invoice?.shipping?.name : await email)
 		];
 		
 		const variables = [
@@ -41,7 +41,7 @@ const sendPaymentReceive = async (email, subject, invoice) => {
 			.setVariables(variables)
 			.setAttachments([
 				{
-					filename: `invoice_F0000${await invoice?.invoiceNumber}_${await invoice?.reference}_${moment(await invoice?.Date).locale("de").format('L')}.pdf`,
+					filename: `invoice_F0000${await invoice?.invoiceNumber}_${await invoice?.reference}_${moment(await invoice?.Date).locale("nl").format('L')}.pdf`,
 					content: fs.readFileSync(path.join(__dirname + `/../pdf/invoice_F0000${await invoice?.invoiceNumber}_${await invoice?.reference}_${moment(await invoice?.Date).locale("nl").format('L')}.pdf`)).toString('base64'),
 					type: "application/pdf"
 				}
@@ -55,7 +55,7 @@ const sendPaymentReceive = async (email, subject, invoice) => {
 
 const sendOrderShipped = async (email, subject, invoice) => {
 	try {
-		const sentFrom = new Sender("rcdriftauto@gmail.com", "RCDriftAuto.nl")
+		const sentFrom = new Sender("noreply@rcdriftauto.nl", "RCDriftAuto.nl")
 
 		const recipients = [
 			new Recipient(email, await invoice?.shipping?.name ? await invoice?.shipping?.name : await email)
@@ -67,7 +67,7 @@ const sendOrderShipped = async (email, subject, invoice) => {
 				substitutions: [
 					{
 						var: 'delivery_date',
-						value: moment(Date.now()).add(7, 'days').locale("nl").format('LL')
+						value: moment(Date.now()).add(4, 'days').locale("nl").format('LL')
 					},
 				],
 			}
@@ -89,7 +89,7 @@ const sendOrderShipped = async (email, subject, invoice) => {
 
 const sendOrderDelivered = async (email, subject, invoice) => {
 	try {
-		const sentFrom = new Sender("rcdriftauto@gmail.com", "RCDriftAuto.nl")
+		const sentFrom = new Sender("noreply@rcdriftauto.nl", "RCDriftAuto.nl")
 
 		const recipients = [
 			new Recipient(email, await invoice?.shipping?.name ? await invoice?.shipping?.name : await email)
