@@ -59,6 +59,24 @@ router.post("/create-checkout-session", async (req, res) => {
     };
   });
 
+	let totalProducts = 0;
+
+	for (const item of req.body.cartItems) {
+		if (item.hasOwnProperty('cartQuantity')) {
+			totalProducts += item.cartQuantity;
+		}
+	}
+
+	let discount = 0;
+
+	if (totalProducts === 2) {
+		discount = 5; // Apply 5% discount if they buy 2 products
+	} else if (totalProducts >= 3) {
+		discount = 10; // Apply 10% discount if they buy 3 or more products
+	}
+
+	console.log(discount);
+
   // "sofort", "bancontact", "klarna", "customer_balance", "sepa_debit", "giropay", "eps",
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["bancontact", "ideal", "paypal", "klarna", "card"],
@@ -70,26 +88,31 @@ router.post("/create-checkout-session", async (req, res) => {
         shipping_rate_data: {
           type: "fixed_amount",
           fixed_amount: {
-            amount: 0,
+            amount: req.body.insurance ? 299 : 0,
             currency: "eur",
           },
-          display_name: "Gratis Verzendkosten",
+          display_name: req.body.insurance ? "Verzekerd Verzenden" : "Gratis Verzendkosten",
           delivery_estimate: {
             minimum: {
               unit: "business_day",
-              value: 3,
+              value: 4,
             },
             maximum: {
               unit: "business_day",
-              value: 12,
+              value: 7,
             },
           },
         }}],
     line_items,
+		discounts: discount !== 0 ? [
+			{
+				coupon: discount === 5 ? "01yUgmTT" : discount === 10 ? "e3LTp5dB" : ""
+				// 10%: uf3fkBJq, 5%: rkp7ttoT
+			}
+		] : [],
     mode: "payment",
     customer: customer.id,
     locale: "nl",
-    allow_promotion_codes: true,
     success_url: `${process.env.CLIENT_URL}/betaald`,
     cancel_url: `${process.env.CLIENT_URL}/winkelwagen`,
   });
@@ -138,6 +161,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 		reference: randomReference.toUpperCase(),
     payment_method: "stripe",
     payment_status: await data?.payment_status,
+		insuranceAmount: data?.shipping_cost?.amount_total === 299 ? true : false,
   });
 
 	const savedOrder = await newOrder.save();
@@ -172,6 +196,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 					products: lineItems.data,
 					subtotal: data?.amount_total * 0.79,
 					total: data?.amount_total,
+					insuranceAmount: data?.shipping_cost?.amount_total
 				})
 				
 				const savedInvoice = await newInvoice.save();
@@ -280,9 +305,9 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 					doc.fontSize(10)
 					doc.font("Helvetica")
 						lineItems?.data?.push({
-							amount_total: 0,
+							amount_total: insuranceAmount === 299 ? 299 : 0,
 							quantity: 1,
-							description: "Gratis Verzendkosten",
+							description: insuranceAmount === 299 ? "Verzekerd Verzenden" : "Gratis Verzendkosten",
 						})
 						lineItems?.data?.map((product, index) => {
 							doc.text(product?.description, 40, (298 + (index + 1) * margin1))
@@ -369,6 +394,7 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 					products: lineItems.data,
 					subtotal: data?.amount_total,
 					total: data?.amount_total,
+					insuranceAmount: data?.shipping_cost?.amount_total
 				})
 				
 				const savedInvoice = await customerInvoice.save();
@@ -477,9 +503,9 @@ const createInvoiceAndOrder = async (customer, data, lineItems) => {
 					doc.fontSize(10)
 					doc.font("Helvetica")
 						lineItems?.data?.push({
-							amount_total: 0,
+							amount_total: data?.shipping_cost?.amount_total === 299 ? 299 : 0,
 							quantity: 1,
-							description: "Gratis Verzendkosten",
+							description: data?.shipping_cost?.amount_total === 299 ? "Verzekerd Verzenden" : "Gratis Verzendkosten",
 						})
 						lineItems?.data?.map((product, index) => {
 							doc.text(product?.description, 40, (298 + (index + 1) * margin1))

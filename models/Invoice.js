@@ -17,6 +17,7 @@ const invoiceSchema = new mongoose.Schema(
 		products: { type: Array },
 		subtotal: { type: Number },
 		total: { type: Number },
+		insurance: {type: Boolean},
   },
   { timestamps: true }
 );

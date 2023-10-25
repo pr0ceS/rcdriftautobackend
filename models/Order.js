@@ -14,7 +14,8 @@ const orderSchema = new mongoose.Schema(
 		customerId: { type: String },
 		reference: { type: String },
 		paypal_id: {type: String},
-		paypal_payer_id: {type: String}
+		paypal_payer_id: {type: String},
+		insurance: {type: Boolean},
   },
   { timestamps: true }
 );
