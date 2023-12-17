@@ -11,7 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mollie/api-client": "^3.6.0",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.31.0",
     "cors": "^2.8.5",
@@ -29,7 +28,6 @@
     "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19",
     "os": "^0.1.2",
-    "paypal-rest-sdk": "^1.8.1",
     "pdfkit": "^0.13.0",
     "slugify": "^1.6.5",
     "stripe": "^10.7.0",

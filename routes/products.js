@@ -62,7 +62,6 @@ router.get('/accessoires', async (req, res) => {
 
 
 //CREATE
-
 router.post("/", isAdmin, async (req, res) => {
   const { name, desc, price, image, sale, tax, stock, deliveryTime, color, ranking, soldOut } = req.body;
 

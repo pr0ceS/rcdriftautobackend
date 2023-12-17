@@ -106,7 +106,7 @@ router.post("/create-checkout-session", async (req, res) => {
     line_items,
 		discounts: discount !== 0 ? [
 			{
-				coupon: discount === 5 ? "rkp7ttoT" : discount === 10 ? "uf3fkBJq" : ""
+				coupon: discount === 5 ? "rkp7ttoT" : discount === 10 ? "WhJPaYCF" : ""
 				// 10%: uf3fkBJq, 5%: rkp7ttoT
 			}
 		] : [],
